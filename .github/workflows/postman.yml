@@ -3,7 +3,7 @@ name: Run Postman Tests
 on:
   push:
     branches:
-      - master
+      - main
 
   workflow_dispatch:
 
@@ -20,11 +20,24 @@ jobs:
         with:
           node-version: '20'
 
-      - name: Install Newman
-        run: npm install -g newman
+      - name: Install Newman and Reporter
+        run: |
+          npm install -g newman
+          npm install -g newman-reporter-htmlextra
+
+      - name: Create reports folder
+        run: mkdir -p reports
 
       - name: Run Postman Collection
         run: |
-          newman run Automation_FakeStoreAPI.postman_collection.json \
-          -e Automation_FakeStoreAPI_Env.postman_environment.json \
-          -d fakeapiauto.csv
+          newman run collection.json \
+          -e environment.json \
+          -d data.csv \
+          -r cli,htmlextra \
+          --reporter-htmlextra-export reports/report.html
+
+      - name: Upload HTML Report
+        uses: actions/upload-artifact@v4
+        with:
+          name: postman-report
+          path: reports/report.html
