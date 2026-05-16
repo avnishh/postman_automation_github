@@ -30,9 +30,9 @@ jobs:
 
       - name: Run Postman Collection
         run: |
-          newman run collection.json \
-          -e environment.json \
-          -d data.csv \
+          newman run Automation_FakeStoreAPI.postman_collection.json \
+          -e Automation_FakeStoreAPI_Env.postman_environment.json \
+          -d fakeapiauto.csv \
           -r cli,htmlextra \
           --reporter-htmlextra-export reports/report.html
 
