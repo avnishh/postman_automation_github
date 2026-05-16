@@ -20,20 +20,19 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: '20'
+          node-version: '24'
 
-      - name: Install Newman reporter (uses npx to run)
+      - name: Install Newman and Reporter
         run: |
-          npm install newman-reporter-htmlextra --no-save
+          npm install -g newman
+          npm install -g newman-reporter-htmlextra
 
       - name: Create reports folder
         run: mkdir -p reports
 
       - name: Run Postman Collection
-        id: run_newman
-        continue-on-error: true
         run: |
-          npx newman run Automation_FakeStoreAPI.postman_collection.json \
+          newman run Automation_FakeStoreAPI.postman_collection.json \
             -e Automation_FakeStoreAPI_Env.postman_environment.json \
             -d fakeapiauto.csv \
             -r cli,htmlextra \
@@ -46,8 +45,4 @@ jobs:
           name: postman-report
           path: reports/report.html
 
-      - name: Fail if Newman reported failures
-        if: steps.run_newman.outcome != 'success'
-        run: |
-          echo "Newman reported failures; failing job after uploading report."
-          exit 1
+    
