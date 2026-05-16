@@ -10,6 +10,8 @@ on:
 jobs:
   postman-tests:
     runs-on: ubuntu-latest
+    env:
+      FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: 'true'
 
     steps:
       - name: Checkout Repository
@@ -20,24 +22,32 @@ jobs:
         with:
           node-version: '20'
 
-      - name: Install Newman and Reporter
+      - name: Install Newman reporter (uses npx to run)
         run: |
-          npm install -g newman
-          npm install -g newman-reporter-htmlextra
+          npm install newman-reporter-htmlextra --no-save
 
       - name: Create reports folder
         run: mkdir -p reports
 
       - name: Run Postman Collection
+        id: run_newman
+        continue-on-error: true
         run: |
-          newman run Automation_FakeStoreAPI.postman_collection.json \
-          -e Automation_FakeStoreAPI_Env.postman_environment.json \
-          -d fakeapiauto.csv \
-          -r cli,htmlextra \
-          --reporter-htmlextra-export reports/report.html
+          npx newman run Automation_FakeStoreAPI.postman_collection.json \
+            -e Automation_FakeStoreAPI_Env.postman_environment.json \
+            -d fakeapiauto.csv \
+            -r cli,htmlextra \
+            --reporter-htmlextra-export reports/report.html
 
       - name: Upload HTML Report
+        if: always()
         uses: actions/upload-artifact@v4
         with:
           name: postman-report
           path: reports/report.html
+
+      - name: Fail if Newman reported failures
+        if: steps.run_newman.outcome != 'success'
+        run: |
+          echo "Newman reported failures; failing job after uploading report."
+          exit 1
