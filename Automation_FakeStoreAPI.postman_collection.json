@@ -1,0 +1,409 @@
+{
+  "info": {
+    "_postman_id": "17b0a096-70eb-441e-a4b4-a4e77a6118e1",
+    "name": "Automation_FakeStoreAPI",
+    "description": "A free fake API for testing and prototyping e-commerce applications.\n\nContact Support:\n Email: support@fakestoreapi.com",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "_exporter_id": "12354024"
+  },
+  "item": [
+    {
+      "name": "users",
+      "item": [
+        {
+          "name": "{id}",
+          "item": [
+            {
+              "name": "Get a single user",
+              "event": [
+                {
+                  "listen": "prerequest",
+                  "script": {
+                    "exec": [
+                      "const apiName =(pm.iterationData.get('api') || '').trim();\r",
+                      "\r",
+                      "if(apiName!== 'Get a single user'){\r",
+                      "    pm.execution.skipRequest();\r",
+                      "}\r",
+                      "\r",
+                      "function getFormattedDate() {\r",
+                      "    const now = new Date();\r",
+                      "\r",
+                      "    const year = now.getFullYear();\r",
+                      "    const month = String(now.getMonth() + 1).padStart(2, '0');\r",
+                      "    const day = String(now.getDate()).padStart(2, '0');\r",
+                      "\r",
+                      "    const hours = String(now.getHours()).padStart(2, '0');\r",
+                      "    const minutes = String(now.getMinutes()).padStart(2, '0');\r",
+                      "    const seconds = String(now.getSeconds()).padStart(2, '0');\r",
+                      "\r",
+                      "    return `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`;\r",
+                      "}\r",
+                      "\r",
+                      "pm.environment.set(\"exe_start_date\", getFormattedDate());\r",
+                      "console.log(\"exe_start_date:\",pm.environment.get(\"exe_start_date\"));"
+                    ],
+                    "type": "text/javascript",
+                    "packages": {},
+                    "requests": {}
+                  }
+                },
+                {
+                  "listen": "test",
+                  "script": {
+                    "exec": [
+                      "\r",
+                      "if(pm.iterationData.get('api') === 'Get a single user'){\r",
+                      "    let testcase = pm.iterationData.get(\"testcase\");\r",
+                      "    pm.test(testcase + \": \", function () {\r",
+                      "        pm.response.to.have.status(200);\r",
+                      "});\r",
+                      "}\r",
+                      "pm.test(\"Body is correct\", function () {\r",
+                      "    pm.response.to.have.body(\"response_body_string\");\r",
+                      "});"
+                    ],
+                    "type": "text/javascript",
+                    "packages": {},
+                    "requests": {}
+                  }
+                }
+              ],
+              "request": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/users/:id",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "users",
+                    ":id"
+                  ],
+                  "variable": [
+                    {
+                      "key": "id",
+                      "value": "{{id}}"
+                    }
+                  ]
+                },
+                "description": "Retrieve details of a specific user by ID."
+              },
+              "response": []
+            }
+          ]
+        },
+        {
+          "name": "Add a new user",
+          "event": [
+            {
+              "listen": "prerequest",
+              "script": {
+                "exec": [
+                  "const apiName =(pm.iterationData.get('api') || '').trim();\r",
+                  "\r",
+                  "if(apiName!== 'Add a new user'){\r",
+                  "    pm.execution.skipRequest();\r",
+                  "}\r",
+                  "\r",
+                  "function getFormattedDate() {\r",
+                  "    const now = new Date();\r",
+                  "\r",
+                  "    const year = now.getFullYear();\r",
+                  "    const month = String(now.getMonth() + 1).padStart(2, '0');\r",
+                  "    const day = String(now.getDate()).padStart(2, '0');\r",
+                  "\r",
+                  "    const hours = String(now.getHours()).padStart(2, '0');\r",
+                  "    const minutes = String(now.getMinutes()).padStart(2, '0');\r",
+                  "    const seconds = String(now.getSeconds()).padStart(2, '0');\r",
+                  "\r",
+                  "    return `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`;\r",
+                  "}\r",
+                  "\r",
+                  "pm.environment.set(\"exe_start_date\", getFormattedDate());\r",
+                  "console.log(\"exe_start_date:\",pm.environment.get(\"exe_start_date\"));"
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            },
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "\r",
+                  "if(pm.iterationData.get('api') === 'Add a new user'){\r",
+                  "    let testcase = pm.iterationData.get(\"testcase\");\r",
+                  "    pm.test(testcase + \": \", function () {\r",
+                  "        pm.response.to.have.status(201);\r",
+                  "});\r",
+                  "}"
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{{request}}",
+              "options": {
+                "raw": {
+                  "headerFamily": "json",
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/users",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "users"
+              ]
+            },
+            "description": "Create a new user."
+          },
+          "response": []
+        },
+        {
+          "name": "Get all users",
+          "event": [
+            {
+              "listen": "prerequest",
+              "script": {
+                "exec": [
+                  "const apiName =(pm.iterationData.get('api') || '').trim();\r",
+                  "\r",
+                  "if(apiName!== 'Get all users'){\r",
+                  "    pm.execution.skipRequest();\r",
+                  "}\r",
+                  "\r",
+                  "function getFormattedDate() {\r",
+                  "    const now = new Date();\r",
+                  "\r",
+                  "    const year = now.getFullYear();\r",
+                  "    const month = String(now.getMonth() + 1).padStart(2, '0');\r",
+                  "    const day = String(now.getDate()).padStart(2, '0');\r",
+                  "\r",
+                  "    const hours = String(now.getHours()).padStart(2, '0');\r",
+                  "    const minutes = String(now.getMinutes()).padStart(2, '0');\r",
+                  "    const seconds = String(now.getSeconds()).padStart(2, '0');\r",
+                  "\r",
+                  "    return `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`;\r",
+                  "}\r",
+                  "\r",
+                  "pm.environment.set(\"exe_start_date\", getFormattedDate());\r",
+                  "console.log(\"exe_start_date:\",pm.environment.get(\"exe_start_date\"));"
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            },
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "\r",
+                  "if(pm.iterationData.get('api') === 'Get all users'){\r",
+                  "    let testcase = pm.iterationData.get(\"testcase\");\r",
+                  "    pm.test(testcase + \": \", function () {\r",
+                  "        pm.response.to.have.status(200);\r",
+                  "});\r",
+                  "}"
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/users",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "users"
+              ]
+            },
+            "description": "Retrieve a list of all users."
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "auth",
+      "item": [
+        {
+          "name": "login",
+          "item": [
+            {
+              "name": "Login",
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "exec": [
+                      "\r",
+                      "if(pm.iterationData.get('api') === 'Login'){\r",
+                      "    let testcase = pm.iterationData.get(\"testcase\");\r",
+                      "    pm.test(testcase + \": \", function () {\r",
+                      "        pm.response.to.have.status(200);\r",
+                      "});\r",
+                      "}"
+                    ],
+                    "type": "text/javascript",
+                    "packages": {},
+                    "requests": {}
+                  }
+                },
+                {
+                  "listen": "prerequest",
+                  "script": {
+                    "exec": [
+                      "const apiName =(pm.iterationData.get('api') || '').trim();\r",
+                      "\r",
+                      "if(apiName!== 'Login'){\r",
+                      "    pm.execution.skipRequest();\r",
+                      "}\r",
+                      "\r",
+                      "function getFormattedDate() {\r",
+                      "    const now = new Date();\r",
+                      "\r",
+                      "    const year = now.getFullYear();\r",
+                      "    const month = String(now.getMonth() + 1).padStart(2, '0');\r",
+                      "    const day = String(now.getDate()).padStart(2, '0');\r",
+                      "\r",
+                      "    const hours = String(now.getHours()).padStart(2, '0');\r",
+                      "    const minutes = String(now.getMinutes()).padStart(2, '0');\r",
+                      "    const seconds = String(now.getSeconds()).padStart(2, '0');\r",
+                      "\r",
+                      "    return `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`;\r",
+                      "}\r",
+                      "\r",
+                      "pm.environment.set(\"exe_start_date\", getFormattedDate());\r",
+                      "console.log(\"exe_start_date:\",pm.environment.get(\"exe_start_date\"));"
+                    ],
+                    "type": "text/javascript",
+                    "packages": {},
+                    "requests": {}
+                  }
+                }
+              ],
+              "request": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{{request}}",
+                  "options": {
+                    "raw": {
+                      "headerFamily": "json",
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/auth/login",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "auth",
+                    "login"
+                  ]
+                },
+                "description": "Authenticate a user."
+              },
+              "response": []
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "event": [
+    {
+      "listen": "prerequest",
+      "script": {
+        "type": "text/javascript",
+        "packages": {},
+        "requests": {},
+        "exec": [
+          "\r",
+          "pm.collectionVariables.set(\r",
+          "    \"request\",\r",
+          "    (pm.iterationData.get(\"request\") || \"\").trim()\r",
+          ");\r",
+          ""
+        ]
+      }
+    },
+    {
+      "listen": "test",
+      "script": {
+        "type": "text/javascript",
+        "packages": {},
+        "requests": {},
+        "exec": [
+          ""
+        ]
+      }
+    }
+  ],
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "https://fakestoreapi.com"
+    },
+    {
+      "key": "id",
+      "value": ""
+    },
+    {
+      "key": "request",
+      "value": ""
+    }
+  ]
+}

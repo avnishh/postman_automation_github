@@ -1,0 +1,13 @@
+testcase,api,request
+tc01,Add a new user,"{
+  ""id"": 11,
+  ""username"": ""raghav"",
+  ""email"": ""Keshav@gmail.com"",
+  ""password"": ""Test@123""
+}"
+tc02,Get all users,
+tc03,Get a single user,
+tc04,Login,"{
+  ""username"": ""jimmie_k"",
+  ""password"": ""klein""
+}"
